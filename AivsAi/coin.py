@@ -1,0 +1,52 @@
+import pygame
+import os
+from Utility.path import path2
+WIDTH, HEIGHT = 600, 600
+ROWS, COLS = 8, 8
+SQUARE_SIZE = WIDTH//COLS
+
+# rgb
+Orange = (255, 128, 0)
+WHITE = (255, 255, 255)
+BLACK = (0, 0, 0)
+BLUE = (0, 0, 255)
+GREY = (128,128,128)
+#path=os.path.abspath("/home/nkit/Desktop/Submit/checker_master/man/kingimage/crown.png")
+CROWN = pygame.transform.scale(pygame.image.load(path2), (44, 25))
+
+class Piece:
+    PADDING = 15
+    OUTLINE = 2
+
+    def __init__(self, row, col, color):
+        self.row = row
+        self.col = col
+        self.color = color
+        self.king = False
+        self.x = 0
+        self.y = 0
+        self.calc_pos()
+
+    def King_Assigned(self):
+        self.king = True
+
+    def calc_pos(self):
+        self.x = SQUARE_SIZE * self.col + SQUARE_SIZE // 2
+        self.y = SQUARE_SIZE * self.row + SQUARE_SIZE // 2
+
+    
+    
+    def draw(self, win):
+        radius = SQUARE_SIZE//2 - self.PADDING
+        pygame.draw.circle(win, GREY, (self.x, self.y), radius + self.OUTLINE)
+        pygame.draw.circle(win, self.color, (self.x, self.y), radius)
+        if self.king:
+            win.blit(CROWN, (self.x - CROWN.get_width()//2, self.y - CROWN.get_height()//2))
+
+    def move(self, row, col):
+        self.row = row
+        self.col = col
+        self.calc_pos()
+
+    def __repr__(self):
+        return str(self.color)
